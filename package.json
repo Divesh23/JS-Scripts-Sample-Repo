@@ -1,0 +1,22 @@
+{
+  "name": "samplerepo",
+  "version": "1.0.0",
+  "description": "sample repo test",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "mocha",
+    "testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.1.3"
+  }
+}
