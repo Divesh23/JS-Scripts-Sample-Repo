@@ -4,10 +4,10 @@
   "description": "sample repo test",
   "main": "index.js",
   "directories": {
-    "test": "tests"
+    "test": ""
   },
   "scripts": {
-    "test": "mocha --require test-setup.js './**/*.spec.js'"
+    "test":  "mocha"
   },
   "keywords": [
     "mocha",

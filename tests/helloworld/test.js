@@ -1,5 +1,5 @@
 var assert= require('assert');
-var helloworld=require('../sample code/helloworld');
+var helloworld=require('../../helloworld/helloworld');
 
 describe('Hello World Test',function(){
 
