@@ -6,6 +6,7 @@ var should=require('chai').should();
 var chai=require('chai');
 var chaiaspromised=require('chai-as-promised');
 var sinon=require('sinon');
+
 chai.should();
 chai.use(chaiaspromised);
 
@@ -24,16 +25,31 @@ describe('AuthController',function(){
 
     describe.only('IsAuthorized',function(){
 
-        it('should return false if not authorized',function(){
+        var user={}
+        beforeEach (function(){
+            user={
+                roles:['user'],
+                isAuthorized:function(neededRole){
+                    return this.roles.indexOf(neededRole)>=0;
+
+                    }
+                }
+                sinon.spy(user,'isAuthorized');
+                authController.setUser(user);
+        })
+
+        it.only('should return false if not authorized',function(){
             var isAuth=authController.isAuthorized('admin');
             //authController.setRoles(['user']);
             assert.equal(false,isAuth);
+            console.log(user.isAuthorized);
+            user.isAuthorized.calledOnce.should.be.true;
             expect(isAuth).to.be.false;
 
         })
         it('should return true if  authorized',function(){
             authController.setRoles(['user','admin']);
-            var isAuth=authController.isAuthorized('admin');
+            var isAuth=authController.isAuthorized('user');
             isAuth.should.be.true;
             //assert.equal(true,authController.isAuthorized('admin'));
 
@@ -74,7 +90,7 @@ describe('AuthController',function(){
     })
 
 
-    describe.only('Get Index',function(){
+    describe('Get Index',function(){
 
         it('should get the Index of the function',function(){
           var req={};
@@ -84,7 +100,8 @@ describe('AuthController',function(){
 
           authController.getIndex(req,res);
           console.log(res.render);
-          
+          res.render.calledOnce.should.be.true;
+          res.render.firstCall.args[0].should.equal('index');
         })
 
     })
