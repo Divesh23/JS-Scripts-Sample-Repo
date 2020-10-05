@@ -23,7 +23,7 @@ describe('AuthController',function(){
 
     });*/
 
-    describe.only('IsAuthorized',function(){
+    describe.skip('IsAuthorized',function(){
 
         var user={}
         beforeEach (function(){
@@ -38,7 +38,7 @@ describe('AuthController',function(){
                 authController.setUser(user);
         })
 
-        it.only('should return false if not authorized',function(){
+        it.skip('should return false if not authorized',function(){
             var isAuth=authController.isAuthorized('admin');
             //authController.setRoles(['user']);
             assert.equal(false,isAuth);
@@ -72,11 +72,11 @@ describe('AuthController',function(){
            function(isAuth){
             assert.equal(false,isAuth);
             done();
-           });
+                 });
         //}
-        })
+            })
 
-    })
+        })
 
     describe.skip('IsAuthorizedPromised',function(){
 
@@ -90,18 +90,40 @@ describe('AuthController',function(){
     })
 
 
-    describe('Get Index',function(){
+    describe.only('Get Index',function(){
+        var user={}
+        beforeEach (function(){
+            user={
+                roles:['user'],
+                isAuthorized:function(neededRole){
+                    return this.roles.indexOf(neededRole)>=0;
 
-        it('should get the Index of the function',function(){
-          var req={};
-          var res={
-              render:sinon.spy()
-          };
+                    }
+                }
+                //sinon.spy(user,'isAuthorized');
+                //authController.setUser(user);
+        });
 
+        it('should get the Index of the function if Authorized',function(){
+            //var isAuth=sinon.stub(user,'isAuthorized').returns(true);
+            var isAuth=sinon.stub(user,'isAuthorized').returns(true);
+            var req={user:user};
+            var res={
+              // to use mock/stub
+                render: function(){}
+              // to use spy
+              //render:sinon.spy()
+            };
+            
+          var mock=sinon.mock(res);
+          // using mocks
+          mock.expects('render').once().withExactArgs('index');
           authController.getIndex(req,res);
-          console.log(res.render);
-          res.render.calledOnce.should.be.true;
-          res.render.firstCall.args[0].should.equal('index');
+          //console.log(res.render);
+          isAuth.calledOnce.should.be.true;
+          // if Mocks not used
+          //res.render.calledOnce.should.be.true;
+          //res.render.firstCall.args[0].should.equal('index');
         })
 
     })
